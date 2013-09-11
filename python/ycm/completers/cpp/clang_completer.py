@@ -260,6 +260,8 @@ class ClangCompleter( Completer ):
   def GetDiagnosticsForCurrentFile( self ):
     if self.DiagnosticsForCurrentFileReady():
       diagnostics = self.completer.DiagnosticsForFile( vim.current.buffer.name )
+      diagnostics = [d for d in diagnostics if not d.text_ in
+          ["#pragma once in main file"]]
       self.diagnostic_store = DiagnosticsToDiagStructure( diagnostics )
       self.last_prepared_diagnostics = [ DiagnosticToDict( x ) for x in
           diagnostics[ : MAX_DIAGNOSTICS_TO_DISPLAY ] ]
